@@ -260,11 +260,42 @@ All 11 generated plots are saved in the [`plots/`](plots/) directory:
 
 ---
 
-## 10. Next Steps & Ideas for Further Exploration
+## 10. Model Serialization & Export
+
+Once the model was tuned, cross-validated, and interpreted, we exported it for production deployment and future inference:
+- **`models/heart_disease_model.joblib`**: Scikit-Learn's recommended serialization format using `joblib`.
+- **`models/heart_disease_model.pkl`**: Standard Python `pickle` format.
+
+### How to Load and Use the Exported Model
+```python
+import joblib
+import pandas as pd
+
+# 1. Load the trained model
+model = joblib.load("models/heart_disease_model.joblib")
+
+# 2. Make predictions on new patient records (13 clinical features)
+# Example: 1 = Disease, 0 = No Disease
+new_patient = pd.DataFrame([{
+    "age": 63, "sex": 1, "cp": 3, "trestbps": 145, "chol": 233,
+    "fbs": 1, "restecg": 0, "thalach": 150, "exang": 0,
+    "oldpeak": 2.3, "slope": 0, "ca": 0, "thal": 1
+}])
+
+prediction = model.predict(new_patient)
+probabilities = model.predict_proba(new_patient)
+
+print("Prediction:", "Disease" if prediction[0] == 1 else "No Disease")
+print(f"Confidence: {probabilities[0][prediction[0]]:.2%}")
+```
+
+---
+
+## 11. Next Steps & Ideas for Further Exploration
 
 If you want to continue improving this project, here are four impactful machine learning experiments to try next:
 1. **Feature Scaling (`StandardScaler` or `MinMaxScaler`)**: While tree models do not require scaling, distance-based models (KNN) and regularized linear models (Logistic Regression) often benefit when features with large ranges (e.g., `chol`, `thalach`, `trestbps`) are normalized.
 2. **Collect More Data**: 303 samples is a small dataset for modern machine learning; acquiring additional clinical observations will improve model robustness.
 3. **Gradient Boosting Algorithms**: Benchmark gradient-boosted decision tree libraries such as **XGBoost**, **LightGBM**, or **CatBoost**.
-4. **Model Deployment**: Export the model using `joblib` or `pickle` and wrap it into a lightweight web API (FastAPI or Flask) or interactive UI (Streamlit) for real-time patient risk assessment.
+4. **Interactive Web App**: Wrap the exported model (`models/heart_disease_model.joblib`) into a lightweight **Streamlit** dashboard or a **FastAPI** endpoint for real-time patient risk assessment.
 
