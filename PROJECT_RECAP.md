@@ -289,6 +289,19 @@ print("Prediction:", "Disease" if prediction[0] == 1 else "No Disease")
 print(f"Confidence: {probabilities[0][prediction[0]]:.2%}")
 ```
 
+### Running the Interactive Streamlit Web Application
+We wrapped our serialized model into an interactive clinical risk dashboard ([`app.py`](app.py)).
+
+To launch the app locally:
+```bash
+streamlit run app.py
+```
+This opens a local browser interface where you can:
+- Input patient biomarkers (demographics, vital signs, ECG, stress tests).
+- Select quick-load patient profiles (Healthy, High Risk, Cleveland Dataset sample).
+- View real-time probability gauges and clinical recommendations.
+- Inspect model coefficients and training evaluation plots.
+
 ---
 
 ## 11. Next Steps & Ideas for Further Exploration
